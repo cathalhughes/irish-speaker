@@ -1,0 +1,55 @@
+.microphone {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+}
+.button {
+  cursor: pointer;
+}
+.button:active, .button:focus {
+  border: 1px solid #274957;
+  color: #274957;
+  outline: none;
+}
+.button--microphone {
+  background-color: transparent;
+  border: 1px solid #447694;
+  border-radius: 50%;
+  color: #447694;
+  font-size: 30vh;
+  height: 50vh;
+  transition: all 0.1s;
+  width: 50vh;
+}
+.button--microphone-active {
+  background-color: transparent;
+  border: 1px solid #ff5852;
+  border-radius: 50%;
+  color: #ff5852;
+  font-size: 50vh;
+  height: 70vh;
+  transition: all 0.1s;
+  width: 70vh;
+}
+.button--microphone-active:active, .button--microphone-active:focus {
+  border: 1px solid #ff5852;
+  color: #ff5852;
+  outline: none;
+}
+.button--microphone-recording-failure {
+  border-color: red;
+  color: red;
+}
+.button--microphone-recording-failure:active, .button--microphone-recording-failure:focus {
+  border-color: red;
+  color: red;
+}
+.button--microphone-recording-success {
+  border-color: #88d8b0;
+  color: #88d8b0;
+}
+.button--microphone-recording-success:active, .button--microphone-recording-success:focus {
+  border-color: #88d8b0;
+  color: #88d8b0;
+}
