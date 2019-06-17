@@ -4,6 +4,7 @@ URL = window.URL || window.webkitURL;
 var gumStream; 						//stream from getUserMedia()
 var rec; 							//Recorder.js object
 var input; 							//MediaStreamAudioSourceNode we'll be recording
+var transcription;
 
 // shim for AudioContext when it's not avb.
 var AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -35,7 +36,9 @@ function startRecording() {
 
 	navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
 		console.log("getUserMedia() success, stream created, initializing Recorder.js ...");
-    $(microphoneButton).addClass("button--microphone-active");
+		//$(microphoneButton).attr('class', '');
+		$(microphoneButton).attr('class', 'js-microphone button button--microphone button--microphone-active');
+    //$(microphoneButton).addClass("button--microphone-active");
 
 		/*
 			create an audio context after getUserMedia is called
@@ -100,6 +103,7 @@ function createDownloadLink(blob) {
         recordingTrouble();
       } else {
         document.getElementById("loading").innerHTML = '';
+        $("#js-microphone").attr("disabled", false);
         recordingSuccess();
         var json = JSON.parse(e.target.response);
 
@@ -110,6 +114,7 @@ function createDownloadLink(blob) {
   var fd=new FormData();
   fd.append("audio_data", blob, filename);
   document.getElementById("loading").innerHTML = '<img src="static/loading.gif" />';
+  $("#js-microphone").attr("disabled", true);
   xhr.open("POST","/predictWord",true);
   xhr.send(fd);
 }
@@ -174,14 +179,11 @@ function init() {
 
 // Start editing
 function edit() {
+    $('#text').text(transcription)
     $('#form').removeClass('mode-view').addClass('mode-edit');
     $('#tagTipContainer').hide();
 }
 
-//Play Irish
-function play() {
-
-}
 
 // Start tagging
 function tag() {
@@ -207,6 +209,7 @@ function callback(data) {
 
     var tagMap = appData.tagMap;
     var color = appData.colors;
+    transcription = data.transcription;
 
     $('#form').removeClass('mode-edit').addClass('mode-view');
     $('#tagTipContainer').hide();

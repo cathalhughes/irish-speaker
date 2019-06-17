@@ -86,7 +86,8 @@ def speech():
 
     print(taggedPhrase)
     data = {"taggedText": taggedPhrase,
-            "audioQuery": "%20".join(query.split("+"))}
+            "audioQuery": "%20".join(query.split("+")),
+            "transcription": response['transcription']}
     return jsonify(data)
 
 
