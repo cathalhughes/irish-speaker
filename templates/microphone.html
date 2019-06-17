@@ -8,7 +8,7 @@
     <meta name="Irish Speech" content="">
     <meta name="Cathal" content="">
 
-    <title>How Does This Sound in Iri?h!</title>
+    <title>How Does This Sound in Irish!</title>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -22,17 +22,65 @@
 
   </head>
 <body>
+<div class="container" style="margin-top:10px">
+<div class="row">
+  <div class="col">
+  <div class="col-md-4">
 <section class="microphone">
   <button id="js-microphone" class="js-microphone button button--microphone">
     <i class="fas fa-microphone"></i>
   </button>
-  <span id="loading"></span>
-  <div id="1">asdf</div>
-</section>
+    <div>
+        Click and Hold to Record English Speech. Release To Stop!
+    </div>
+  </section>
+  </div>
+    </div>
+
+            <div class="col">
+            <div class="col-md-4">
+              <div id="form" class="mode-edit">
+                <div class="form-group">
+                  <label for="text" class="hidden-xs hidden-sm">Text:</label>
+                  <textarea class="form-control" rows="2" id="text" placeholder="English Text or Speech"></textarea>
+                  <div id="textTagged"></div>
+                </div>
+                <div id="tagTipContainer">
+                    <div class="up">&#9650;</div>
+                    <div id="tagTip"></div>
+                </div>
+                <div class="btn-toolbar" role="toolbar">
+                  <button type="button" class="btn btn-default" id="submit"><span class="glyphicon glyphicon-ok"></span> Translate & POS-tag!</button>
+                  <button type="button" class="btn btn-default" id="edit"><span class="glyphicon glyphicon-edit"></span> Edit text</button>
+                  <button type="button" class="btn btn-default" id="audio"><span class="glyphicon glyphicon-volume-up"></span> Speak in Irish</button>
+                  <!--<select class="form-control" id="language"><option>en</option></select>-->
+                </div>
+                  <span id="loading"></span>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div id="colors">
+                  <div style="background-color: #fc6;">Adjective</div>
+                  <div style="background-color: #c99;">Adverb</div>
+                  <div style="background-color: #cc9;">Conjunction</div>
+                  <div style="background-color: #99c;">Determiner</div>
+                  <div style="background-color: #ccc;">Noun</div>
+                  <div style="background-color: #6c9;">Number</div>
+                  <div style="background-color: #f9c;">Preposition</div>
+                  <div style="background-color: #ee7;">Pronoun</div>
+                  <div style="background-color: #cf6;">Verb</div>
+              </div>
+            </div>
+              </div>
+          </div><!-- /row -->
+  </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/recorderjs/0.1.0/recorder.js"></script>
+<script>
+var appData = {"language":"en","clientStrings":{"label_examples":"Examples: "},"tagMap":{"!":[".","",""],"#":[".","",""],"$":[".","",""],"''":[".","",""],"(":[".","",""],")":[".","",""],",":[".","",""],"-LRB-":[".","",""],"-RRB-":[".","",""],".":[".","",""],":":[".","",""],"?":[".","",""],"ADJ":["Adjective","",""],"CONJ":["Conjunction","",""],"PRON":["Pronoun","",""],"DET":["Determiner","",""],"X":["X","",""],"NOUN":["Noun","",""],"VERB":["Verb","",""],"ADP":["Preposition","",""],"ADV":["Adverb","",""],"CC":["Conjunction","",""],"CD":["Number","",""],"CD|RB":["X","",""],"DT":["Determiner","",""],"EX":["Determiner","",""],"FW":["X","",""],"IN":["Preposition","",""],"IN|RP":["Preposition","",""],"PREP":["Preposition","",""],"JJ":["Adjective","",""],"JJR":["Adjective","",""],"JJRJR":["Adjective","",""],"JJS":["Adjective","",""],"JJ|RB":["Adjective","",""],"JJ|VBG":["Adjective","",""],"LS":["X","",""],"MD":["Verb","",""],"NN":["Noun","",""],"NNP":["Noun","",""],"NNPS":["Noun","",""],"NNS":["Noun","",""],"NN|NNS":["Noun","",""],"NN|SYM":["Noun","",""],"NN|VBG":["Noun","",""],"NP":["Noun","",""],"PDT":["Determiner","",""],"POS":["PRT","",""],"PRP":["Pronoun","",""],"PRP$":["Pronoun","",""],"PRP|VBP":["Pronoun","",""],"PRT":["PRT","",""],"RB":["Adverb","",""],"RBR":["Adverb","",""],"RBS":["Adverb","",""],"RB|RP":["Adverb","",""],"RB|VBG":["Adverb","",""],"RN":["X","",""],"RP":["PRT","",""],"SYM":["X","",""],"TO":["PRT","",""],"UH":["X","",""],"VB":["Verb","",""],"VBD":["Verb","",""],"VBD|VBN":["Verb","",""],"VBG":["Verb","",""],"VBG|NN":["Verb","",""],"VBN":["Verb","",""],"VBP":["Verb","",""],"VBP|TO":["Verb","",""],"VBZ":["Verb","",""],"VP":["Verb","",""],"WDT":["Determiner","",""],"WH":["X","",""],"WP":["Pronoun","",""],"WP$":["Pronoun","",""],"WRB":["Adverb","",""],"``":[".","",""]},"colors":{"Adjective":"#fc6","Adverb":"#c99","Conjunction":"#cc9","Determiner":"#99c","Noun":"#ccc","Number":"#6c9","Preposition":"#f9c","Pronoun":"#ee7","Verb":"#cf6"}};
+</script>
 <script src="static/microphone.js"></script>
 </body>
 </html>
