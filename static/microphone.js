@@ -5,6 +5,7 @@ var gumStream; 						//stream from getUserMedia()
 var rec; 							//Recorder.js object
 var input; 							//MediaStreamAudioSourceNode we'll be recording
 var transcription;
+var recording =  false;
 
 // shim for AudioContext when it's not avb.
 var AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -14,14 +15,21 @@ var audioContext //audio context to help us record
 var microphoneButton = document.getElementById("js-microphone");
 
 //add events to those 2 buttons
-microphoneButton.addEventListener("mousedown", startRecording);
-microphoneButton.addEventListener("mouseup", stopRecording);
+microphoneButton.addEventListener("click", toggleRecording);
+//microphoneButton.addEventListener("touchend", stopRecording);
 
 var constraints = { audio: true, video:false }
+
+function toggleRecording()
+	{
+	    console.log("here");
+		recording ? stopRecording() : startRecording();
+	}
 
 function startRecording() {
 	console.log("recordButton clicked");
 
+    recording = true;
 	/*
 		Simple constraints object, for more advanced audio features see
 		https://addpipe.com/blog/audio-constraints-getusermedia/
@@ -74,6 +82,7 @@ function startRecording() {
 
 function stopRecording() {
 	console.log("stopButton clicked");
+	recording = false;
   $(microphoneButton).removeClass("button--microphone-active");
 
 	//tell the recorder to stop the recording
@@ -104,6 +113,7 @@ function createDownloadLink(blob) {
       } else {
         document.getElementById("loading").innerHTML = '';
         $("#js-microphone").attr("disabled", false);
+        $("#submit").attr("disabled", false);
         recordingSuccess();
         var json = JSON.parse(e.target.response);
 
@@ -115,7 +125,8 @@ function createDownloadLink(blob) {
   fd.append("audio_data", blob, filename);
   document.getElementById("loading").innerHTML = '<img src="static/loading.gif" />';
   $("#js-microphone").attr("disabled", true);
-  xhr.open("POST","/predictWord",true);
+  $("#submit").attr("disabled", true);
+  xhr.open("POST","/speech",true);
   xhr.send(fd);
 }
 
@@ -189,17 +200,42 @@ function edit() {
 function tag() {
     $('#spinner').show();
     var text = $('#text').val();
+    if(text === '') {
+        $('#text').css('border-color', '#ff4c4c');
+
+        // Add a class that defines an animation
+        $('#text').addClass('error');
+
+        // remove the class after the animation completes
+        setTimeout(function() {
+           $('#text').removeClass('error');
+        }, 300);
+
+        e.preventDefault();
+    } else {
+         $('#text').css('border-color', '#fffff');
+    }
     text = text.replace('»', '"');
     text = text.replace('«', '"');
 
     // No proxy when developing (.*local.* in host)
-    var url = "https://postagger.eyelearn.club/getPhraseTranslation1"
-    console.log(language);
+    var url = "/text"
     $.ajax({
         url: url,
         type: "POST",
-        data: {"phrase": text, "language": language},
-        success: callback
+        data: {"phrase": text},
+        beforeSend: function() {
+         document.getElementById("loading").innerHTML = '<img src="static/loading.gif" />';
+         $("#js-microphone").attr("disabled", true);
+         $("#submit").attr("disabled", true);
+         },
+        success: function(data) {
+            document.getElementById("loading").innerHTML = '';
+            $("#js-microphone").attr("disabled", false);
+            $("#submit").attr("disabled", false);
+            callback(data);
+        }
+
     });
     return false;
 }

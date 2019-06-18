@@ -31,7 +31,7 @@
     <i class="fas fa-microphone"></i>
   </button>
     <div>
-        Click and Hold to Record English Speech. Release To Stop!
+        Click/Tap Record English Speech. Click/Tap Again To Stop Recording! Or just type into text Box Provided.
     </div>
   </section>
   </div>
@@ -42,7 +42,7 @@
               <div id="form" class="mode-edit">
                 <div class="form-group">
                   <label for="text" class="hidden-xs hidden-sm">Text:</label>
-                  <textarea class="form-control" rows="2" id="text" placeholder="English Text or Speech"></textarea>
+                  <textarea class="form-control" rows="2" id="text"  placeholder="English Text or Speech"></textarea>
                   <div id="textTagged"></div>
                 </div>
                 <div id="tagTipContainer">
@@ -52,10 +52,15 @@
                 <div class="btn-toolbar" role="toolbar">
                   <button type="button" class="btn btn-default" id="submit"><span class="glyphicon glyphicon-ok"></span> Translate & POS-tag!</button>
                   <button type="button" class="btn btn-default" id="edit"><span class="glyphicon glyphicon-edit"></span> Edit text</button>
-                  <button type="button" class="btn btn-default" id="audio"><span class="glyphicon glyphicon-volume-up"></span> Speak in Irish</button>
+                  <button type="button" class="btn btn-default" id="audio"><span class="glyphicon glyphicon-volume-up"></span>Speak Irish</button>
+                  <!--<select id="district" >-->
+                        <!--<option value="">Connacht</option>-->
+                        <!--<option value="dog">Muster</option>-->
+                        <!--<option value="cat">Ulster</option>-->
+                  <!--</select>-->
                   <!--<select class="form-control" id="language"><option>en</option></select>-->
                 </div>
-                  <span id="loading"></span>
+                  <span id="loading" style="text-align:center;"></span>
               </div>
             </div>
             <div class="col-md-4">

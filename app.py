@@ -42,7 +42,7 @@ def index():
     return render_template("microphone.html")
 
 
-@app.route('/predictWord', methods=['GET', 'POST'])
+@app.route('/speech', methods=['GET', 'POST'])
 def speech():
 
     audio = request.files["audio_data"]
@@ -66,7 +66,7 @@ def speech():
         if "+" in tag.text and "\n" not in tag.text:
             text = tag.text.split("+")
             if text[0] not in tags:
-                if text[1] == "Subst":
+                if text[1] == "Subst" or text[1] == "Verbal":
                     tags[text[0]] = text[2]
                     tagsOnly.append(text[2])
                 else:
@@ -88,6 +88,52 @@ def speech():
     data = {"taggedText": taggedPhrase,
             "audioQuery": "%20".join(query.split("+")),
             "transcription": response['transcription']}
+    return jsonify(data)
+
+@app.route('/text', methods=['GET', 'POST'])
+def text():
+    text = request.form['phrase']
+    print(text)
+
+
+    res_english = pos_tagger_english.tag(word_tokenize(text))
+    simplified_pos_tags_english = [(word, map_tag('en-ptb', 'universal', tag)) for word, tag in res_english]
+    translation = get_translation(text, 'ga')
+    query = "+".join(translation.split())
+    print(query)
+    getTags = requests.get("https://www.scss.tcd.ie/~uidhonne/gaeilgenxuni.cgi?mode=Part-of-Speech&text=" + query + "&submit=Go")
+    html = getTags.content
+    parsed_html = BeautifulSoup(html)
+    taggedElements = parsed_html.body.find_all('font', attrs={'size': '2'})
+    tags = {}
+    #print(taggedElements)
+    tagsOnly = []
+    for tag in taggedElements:
+        if "+" in tag.text and "\n" not in tag.text:
+            text = tag.text.split("+")
+            if text[0] not in tags:
+                if text[1] == "Subst" or text[1] == "Verbal":
+                    tags[text[0]] = text[2]
+                    tagsOnly.append(text[2])
+                else:
+                    tags[text[0]] = text[1]
+                    tagsOnly.append(text[1])
+
+    taggedTranslatedPhrase = []
+    for word, tag in zip(translation.split(), tagsOnly):
+        taggedTranslatedPhrase.append(word + "_" + tag.upper())
+
+
+
+    taggedPhrase = ['_'.join(str(i) for i in tup) for tup in simplified_pos_tags_english]
+
+    taggedPhrase.append("NEWLINE")
+    taggedPhrase = taggedPhrase + taggedTranslatedPhrase
+
+    print(taggedPhrase)
+    data = {"taggedText": taggedPhrase,
+            "audioQuery": "%20".join(query.split("+")),
+            "transcription": text}
     return jsonify(data)
 
 
